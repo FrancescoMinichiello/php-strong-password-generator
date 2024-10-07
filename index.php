@@ -7,16 +7,15 @@ Scriviamo tutto (logica e layout) in un unico file index.php-->
 
 function getPasswordLength()
 {
-    $password = intval(isset($_GET["passwordLength"]));
-    if ($password > 0) {
-    } else {
-        echo "Oops, qualcosa è andato storto, assicurati di aver inserito solo caratteri numerici (Si accettano solo numeri)";
+    if (isset($_GET["passwordLength"])) {
+        $length = $_GET["passwordLength"];
+        if ($length > 0 && $length <= 100) {
+            return $_GET["passwordLength"];
+        } else {
+            return "Oops, qualcosa è andato storto. Assicurati di aver inserito solo caratteri numerici o che il campo non sia vuoto.";
+        }
     }
-
-
-    return $password;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -30,22 +29,25 @@ function getPasswordLength()
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
-    <div class="container-fluid d-flex justify-content-center">
-        <form class="d-flex mt-5" action="index.php" method="GET">
+<body">
+    <div class="container-fluid d-flex justify-content-center bg-success">
+        <form class="d-flex py-5" action="index.php" method="GET">
             <div class="row">
                 <div class="col-8">
-                    <p class="mb-5">Lunghezza password: </p>
+                    <p class="mb-5 fw-semibold">Lunghezza password: </p>
                     <button class="btn btn-lg btn-primary">Invia</button>
                 </div>
                 <div class="col-4">
-                    <input type="text" name="passwordLength">
-                    <p> <?= getPasswordLength() ?> </p>
+                    <input type="number" name="passwordLength" min="1" max="100">
                 </div>
             </div>
         </form>
-
     </div>
-</body>
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <h2 class="mt-5 fw-semibold">La password è: <?= getPasswordLength() ?> </h2>
+        </div>
+    </div>
+    </body>
 
 </html>
